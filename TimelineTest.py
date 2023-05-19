@@ -1,9 +1,12 @@
 import pprint
-import threading
+from threading import Thread
+from threading import Lock
 import time
 
 import numpy as np
 import cv2 as cv
+from numpy import number
+
 from detection_nanodet.nanodet import NanoDet
 import myparser
 import imutils
@@ -117,7 +120,8 @@ CLASSES = (
     'watering plants', 'waxing back', 'waxing chest', 'waxing eyebrows', 'waxing legs', 'weaving basket', 'welding',
     'whistling', 'windsurfing', 'wrapping present', 'wrestling', 'writing', 'yawning', 'yoga', 'zumba)')
 
-lock = threading.Lock()
+strToParse = ""
+lock = Lock()
 array_t1 = np.empty((20, 10), np.chararray)
 array_t2 = np.empty((20, 10), np.chararray)
 SAMPLE_DURATION = 16
@@ -125,159 +129,8 @@ SAMPLE_SIZE = 112
 frames = deque(maxlen=SAMPLE_DURATION)
 camera = cv.VideoCapture(0)
 startTime = time.time()
-activityArray = np.empty((20, 10), np.chararray)
-
-# ///////////////////OBJECT DETECTION///////////////////
-def parse_timeline():
-    parser_tatsu = myparser.TatsuParser()
-    semantics = myparser.TatsuSemantics()
-    oldstr = ''
-    while True:
-        lock.acquire()
-        # Flatten array to create string to parse
-        flattenedMatrix = array_t1.flatten()
-        lock.release()
-        str = ''
-        for item in flattenedMatrix:
-            if item is not None:
-                str = str + item + ' '
-        str = str[:-1]
-        pprint.pprint(str)
-        if str != '' or oldstr == str:
-            ast = parser_tatsu.parse(str, start='start')
-            output = semantics.expression(ast)
-            if output is not None:
-                print(output)
-                output = None
-        oldstr = str
-
-
-def letterbox(srcimg, target_size=(416, 416)):
-    img = srcimg.copy()
-    top, left, newh, neww = 0, 0, target_size[0], target_size[1]
-    if img.shape[0] != img.shape[1]:
-        hw_scale = img.shape[0] / img.shape[1]
-        if hw_scale > 1:
-            newh, neww = target_size[0], int(target_size[1] / hw_scale)
-            img = cv.resize(img, (neww, newh), interpolation=cv.INTER_AREA)
-            left = int((target_size[1] - neww) * 0.5)
-            img = cv.copyMakeBorder(img, 0, 0, left, target_size[1] - neww - left, cv.BORDER_CONSTANT,
-                                    value=0)  # add border
-        else:
-            newh, neww = int(target_size[0] * hw_scale), target_size[1]
-            img = cv.resize(img, (neww, newh), interpolation=cv.INTER_AREA)
-            top = int((target_size[0] - newh) * 0.5)
-            img = cv.copyMakeBorder(img, top, target_size[0] - newh - top, 0, 0, cv.BORDER_CONSTANT, value=0)
-    else:
-        img = cv.resize(img, target_size, interpolation=cv.INTER_AREA)
-
-    letterbox_scale = [top, left, newh, neww]
-    return img, letterbox_scale
-
-
-def getClasses(preds):
-    arr = np.empty(10, np.chararray)
-    i = 0
-    for pred in preds:
-        if pred[-1].astype(np.int32) == 0 or pred[-1].astype(np.int32) == 39 and i < 10:
-            # arr = np.append(arr, classes[pred[-1].astype(np.int32)])
-            arr.put(i, classes[pred[-1].astype(np.int32)])
-            i += 1
-
-    return arr
-
-
-def object_detection():
-    backend_id = backend_target_pairs[0][0]
-    target_id = backend_target_pairs[0][1]
-    model = NanoDet(modelPath='detection_nanodet/object_detection_nanodet_2022nov.onnx',
-                    prob_threshold=0.35,
-                    iou_threshold=0.6,
-                    backend_id=backend_id,
-                    target_id=target_id)
-
-    tm = cv.TickMeter()
-    tm.reset()
-
-    print("Press any key to stop video capture")
-
-    cap = cv.VideoCapture(0)
-    frameNumber = 0
-
-    threading.Thread(target=parse_timeline, daemon=True).start()
-
-    while cv.waitKey(1) < 0:
-        hasFrame, frame = cap.read()
-        if not hasFrame:
-            print('No frames grabbed!')
-            break
-
-        input_blob = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-        input_blob, letterbox_scale = letterbox(input_blob)
-        # Inference
-        tm.start()
-        preds = model.infer(input_blob)
-        tm.stop()
-
-        cv.imshow("NanoDet Demo", frame)
-
-        tm.reset()
-
-        # Get classes and fill timeline
-        arrayClasses = getClasses(preds)
-        lock.acquire()
-        array_t1[frameNumber] = arrayClasses
-        lock.release()
-        # Restart position in array
-        frameNumber += 1
-
-        if frameNumber % 20 == 0:
-            frameNumber = 0
-
-
-# ///////////////////HUMAN ACTIVITY///////////////////
-def human_activity():
-    #SAMPLE_DURATION = 16
-    #SAMPLE_SIZE = 112
-
-    # Initialize the frames queue used to store a rolling sample duration of frames -- this queue will automatically pop out
-    # old frames and accept new ones
-    frames = deque(maxlen=SAMPLE_DURATION)
-
-    # Load the human activity recognition model
-    print("[INFO] Loading the human activity recognition model...")
-    net = cv.dnn.readNet("human-activity-recognition/resnet-34_kinetics.onnx")
-
-    # Grab the pointer to the input video stream
-    print("[INFO] Accessing the video stream...")
-    vs = cv.VideoCapture(0)
-
-    # Loop over the frames from the video stream
-    while cv.waitKey(1) < 0:
-        # Read the frame from the video stream
-        (grabbed, frame) = vs.read()
-        # If the frame was not grabbed then we have reached the end of the video stream
-        if not grabbed:
-            print("[INFO] No frame read from the video stream - Exiting...")
-            break
-        # Resize the frame (to ensure faster processing) and add the frame to our queue
-        frame = imutils.resize(frame, width=400)
-        frames.append(frame)
-        # If the queue is not filled to sample size, continue back to the top of the loop and continue
-        # pooling/processing frames
-        if len(frames) < SAMPLE_DURATION:
-            continue
-        # Now the frames array is filled, we can construct the blob
-        blob = cv.dnn.blobFromImages(frames, 1.0, (SAMPLE_SIZE, SAMPLE_SIZE), (114.7748, 107.7354, 99.4750),
-                                     swapRB=True, crop=True)
-        blob = np.transpose(blob, (1, 0, 2, 3))
-        blob = np.expand_dims(blob, axis=0)
-        # Pass the blob through the network to obtain the human activity recognition predictions
-        net.setInput(blob)
-        outputs = net.forward()
-        label = CLASSES[np.argmax(outputs)]
-        pprint.pprint(label)
-        cv.imshow("Activity Recognition", frame)
+timeline = deque()
+activityLock = Lock()
 
 
 def modified_human_activity_v2():
@@ -300,33 +153,51 @@ def modified_human_activity_v2():
             net.setInput(blob)
             outputs = net.forward()
             label = CLASSES[np.argmax(outputs)]
-            activityArray[0] = label
-            activityArray[1] = time.time()
-            print(activityArray)
+            lock.acquire()
+            timeline.appendleft([label, time.time() - startTime])
+            lock.release()
             cv.imshow("Activity Recognition", frame)
             cv.waitKey(1)
 
 
 def constructTimeline():
-    return 1
+    while True:
+        strToParse = ""
+        time.sleep(5)
+        lock.acquire()
+        for x in timeline:
+            for y in x:
+                if not isinstance(y, float):
+                    strToParse= strToParse + y + " "
+        lock.release()
+        strToParse = strToParse[:-1]
+        print(strToParse)
 
+
+def cleanTimeline():
+    while True:
+        time.sleep(25)
+        x = timeline[-1]
+        x = x[-1]  # Time of last position in deque
+        y = timeline[0]
+        y = y[-1]  # Time of first position in deque
+        lock.acquire()
+        while (y - x) > 20.0:
+            timeline.pop()
+            x = timeline[-1]
+            x = x[-1]
+        lock.release()
 
 
 if __name__ == '__main__':
-    # backend_id = backend_target_pairs[0][0]
-    # target_id = backend_target_pairs[0][1]
-    # model = NanoDet(modelPath='detection_nanodet/object_detection_nanodet_2022nov.onnx',
-    #                 prob_threshold=0.35,
-    #                 iou_threshold=0.6,
-    #                 backend_id=backend_id,
-    #                 target_id=target_id)
-    #
-
-
-    t2 = threading.Thread(modified_human_activity_v2(),daemon=True)
+    t2 = Thread(target=modified_human_activity_v2)
+    t3 = Thread(target=constructTimeline)
+    t4 = Thread(target=cleanTimeline)
     t2.start()
-    t2.join()
-    #t3 = threading.Thread(parse_timeline())
-    #t3.start()
-    #t3.join()
+    t3.start()
+    t4.start()
+
+    # t3 = threading.Thread(parse_timeline())
+    # t2.join()
+    # t3.join()
     print("Done")
