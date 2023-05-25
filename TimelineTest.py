@@ -304,7 +304,11 @@ if __name__ == '__main__':
     while True:
         hasFrame, frame = camera.read()
         cv.rectangle(frame, (0, 0), (300, 40), (0, 0, 0), -1)
-        cv.putText(frame, output, (10, 25), cv.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+        if output is None:
+            action = "no action"
+        else:
+            action = output
+        cv.putText(frame, action, (10, 25), cv.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
         cv.imshow("model", frame)
         cv.waitKey(1)
     print("Done")
