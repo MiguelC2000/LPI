@@ -1,0 +1,5 @@
+classes= 2
+train  = C:\\Projeto_LPI\\train.txt
+valid  = C:\\Projeto_LPI\\test.txt
+names = C:\\Projeto_LPI\\labels.txt
+backup = C:\\Projeto_LPI\\backup\\

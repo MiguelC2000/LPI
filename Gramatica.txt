@@ -1,0 +1,21 @@
+@@grammar::Tatsu
+
+start = expression $ ;
+
+expression =
+            | {subject}+ {object}+ {verb}+ {expression}
+            | {subject}+ {verb}+ {object}+ {expression}
+            | {object}+ {subject}+ {verb}+ {expression}
+            | {object}+ {verb}+ {subject}+ {expression}
+            | {verb}+ {subject}+ {object}+ {expression}
+            | {verb}+ {object}+ {subject}+ {expression}
+            | {subject}+ {expression}
+            | {object}+ {expression}
+            | {verb}+ {expression};
+
+
+subject = 'person' | 'human' ;
+
+object = 'cup' | 'mug' | 'bottle' ;
+
+verb = 'drinking' | 'drinks';

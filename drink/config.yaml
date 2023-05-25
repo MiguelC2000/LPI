@@ -1,0 +1,8 @@
+path: C:\\Projeto_LPI\\data
+train: images\\train
+val: images\\train
+
+#Classes
+names:
+  0: drinking
+  1: not drinking

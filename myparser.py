@@ -13,12 +13,14 @@ from __future__ import annotations
 
 import sys
 
+import tatsu.contexts
 from tatsu.buffering import Buffer
 from tatsu.parsing import Parser
 from tatsu.parsing import tatsumasu
-from tatsu.parsing import leftrec, nomemo, isname  # noqa
+from tatsu.parsing import leftrec, nomemo, isname # noqa
 from tatsu.infos import ParserConfig
 from tatsu.util import re, generic_main  # noqa
+
 
 KEYWORDS = {}  # type: ignore
 
@@ -67,40 +69,140 @@ class TatsuParser(Parser):
     def _expression_(self):  # noqa
         with self._choice():
             with self._option():
+
                 def block1():
                     self._subject_()
-
                 self._positive_closure(block1)
 
                 def block2():
                     self._object_()
-
                 self._positive_closure(block2)
 
                 def block3():
-                    self._expression_()
+                    self._verb_()
+                self._positive_closure(block3)
 
-                self._closure(block3)
-            with self._option():
                 def block4():
-                    self._object_()
-
-                self._positive_closure(block4)
+                    self._expression_()
+                self._closure(block4)
+            with self._option():
 
                 def block5():
                     self._subject_()
-
                 self._positive_closure(block5)
 
                 def block6():
-                    self._expression_()
+                    self._verb_()
+                self._positive_closure(block6)
 
-                self._closure(block6)
-            # self._error(
+                def block7():
+                    self._object_()
+                self._positive_closure(block7)
+
+                def block8():
+                    self._expression_()
+                self._closure(block8)
+            with self._option():
+
+                def block9():
+                    self._object_()
+                self._positive_closure(block9)
+
+                def block10():
+                    self._subject_()
+                self._positive_closure(block10)
+
+                def block11():
+                    self._verb_()
+                self._positive_closure(block11)
+
+                def block12():
+                    self._expression_()
+                self._closure(block12)
+            with self._option():
+
+                def block13():
+                    self._object_()
+                self._positive_closure(block13)
+
+                def block14():
+                    self._verb_()
+                self._positive_closure(block14)
+
+                def block15():
+                    self._subject_()
+                self._positive_closure(block15)
+
+                def block16():
+                    self._expression_()
+                self._closure(block16)
+            with self._option():
+
+                def block17():
+                    self._verb_()
+                self._positive_closure(block17)
+
+                def block18():
+                    self._subject_()
+                self._positive_closure(block18)
+
+                def block19():
+                    self._object_()
+                self._positive_closure(block19)
+
+                def block20():
+                    self._expression_()
+                self._closure(block20)
+            with self._option():
+
+                def block21():
+                    self._verb_()
+                self._positive_closure(block21)
+
+                def block22():
+                    self._object_()
+                self._positive_closure(block22)
+
+                def block23():
+                    self._subject_()
+                self._positive_closure(block23)
+
+                def block24():
+                    self._expression_()
+                self._closure(block24)
+            with self._option():
+
+                def block25():
+                    self._subject_()
+                self._positive_closure(block25)
+
+                def block26():
+                    self._expression_()
+                self._closure(block26)
+            with self._option():
+
+                def block27():
+                    self._object_()
+                self._positive_closure(block27)
+
+                def block28():
+                    self._expression_()
+                self._closure(block28)
+            with self._option():
+
+                def block29():
+                    self._verb_()
+                self._positive_closure(block29)
+
+                def block30():
+                    self._expression_()
+                self._closure(block30)
+            #self._error(
             #    'expecting one of: '
-            #    "'bottle' 'cup' 'human' 'mug' 'person'"
-            #    '<object> <subject>'
-            # )
+            #    "'bottle' 'cup' 'drinking' 'drinks'"
+            #    "'human' 'mug' 'person' <object>"
+            #    '<subject> <verb>'
+            #)
 
     @tatsumasu()
     def _subject_(self):  # noqa
@@ -109,10 +211,10 @@ class TatsuParser(Parser):
                 self._token('person')
             with self._option():
                 self._token('human')
-            # self._error(
+            #self._error(
             #    'expecting one of: '
             #    "'human' 'person'"
-            # )
+            #)
 
     @tatsumasu()
     def _object_(self):  # noqa
@@ -123,28 +225,53 @@ class TatsuParser(Parser):
                 self._token('mug')
             with self._option():
                 self._token('bottle')
-            # self._error(
+            #self._error(
             #    'expecting one of: '
             #    "'bottle' 'cup' 'mug'"
-            # )
+            #)
+
+    @tatsumasu()
+    def _verb_(self):  # noqa
+        with self._choice():
+            with self._option():
+                self._token('drinking')
+            with self._option():
+                self._token('drinks')
+            #self._error(
+            #    'expecting one of: '
+            #    "'drinking' 'drinks'"
+            #)
 
 
 class TatsuSemantics:
     def start(self, ast):  # noqa
         return ast
 
-    def expression(self, ast):  # noqa
-        subject = ast[0]
-        object = ast[1]
-        if subject[0] == 'person' and object[0] == 'bottle':
-            return "Person picks bottle"
+    def check_string_existence_v2(self, ast_list, target_strings):
+        for item in ast_list:
+            if isinstance(item, tatsu.contexts.closure) or isinstance(item, tuple):
+                # Recursively traverse nested lists
+                if self.check_string_existence_v2(item, target_strings):
+                    return True
+            elif isinstance(item, str) and item == target_strings:
+                return True
+        return False
 
+    def expression(self, ast):  # noqa
+        bottle = self.check_string_existence_v2(ast, "bottle")
+        person = self.check_string_existence_v2(ast, "person")
+        verb = self.check_string_existence_v2(ast, "drinking")
+        if person and bottle and verb:
+            return "Person drank water"
         return
 
     def subject(self, ast):  # noqa
         return ast
 
     def object(self, ast):  # noqa
+        return ast
+
+    def verb(self, ast):  # noqa
         return ast
 
 
