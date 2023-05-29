@@ -3,13 +3,40 @@
 start = expression $ ;
 
 expression =
-            | {object}+ {subject}+
-            | {subject}+ {object}+
-            | {subject}+ {object}+ {expression}
-            | {object}+ {subject}+ {expression};
+            | {subject}+ {verb}+ {object}+ {medicine}+ {expression}
+            | {subject}+ {verb}+ {medicine}+ {object}+ {expression}
+            | {subject}+ {object}+ {verb}+ {medicine}+ {expression}
+            | {subject}+ {object}+ {medicine}+ {verb}+ {expression}
+            | {subject}+ {medicine}+ {verb}+ {object}+ {expression}
+            | {subject}+ {medicine}+ {object}+ {verb}+ {expression}
+            | {verb}+ {subject}+ {object}+ {medicine}+ {expression}
+            | {verb}+ {subject}+ {medicine}+ {object}+ {expression}
+            | {verb}+ {object}+ {subject}+ {medicine}+ {expression}
+            | {verb}+ {object}+ {medicine}+ {subject}+ {expression}
+            | {verb}+ {medicine}+ {subject}+ {object}+ {expression}
+            | {verb}+ {medicine}+ {object}+ {subject}+ {expression}
+            | {object}+ {subject}+ {verb}+ {medicine}+ {expression}
+            | {object}+ {subject}+ {medicine}+ {verb}+ {expression}
+            | {object}+ {verb}+ {subject}+ {medicine}+ {expression}
+            | {object}+ {verb}+ {medicine}+ {subject}+ {expression}
+            | {object}+ {medicine}+ {subject}+ {verb}+ {expression}
+            | {object}+ {medicine}+ {verb}+ {subject}+ {expression}
+            | {medicine}+ {subject}+ {verb}+ {object}+ {expression}
+            | {medicine}+ {subject}+ {object}+ {verb}+ {expression}
+            | {medicine}+ {verb}+ {subject}+ {object}+ {expression}
+            | {medicine}+ {verb}+ {object}+ {subject}+ {expression}
+            | {medicine}+ {object}+ {subject}+ {verb}+ {expression}
+            | {medicine}+ {object}+ {verb}+ {subject}+ {expression}
+            | {subject}+ {expression}
+            | {object}+ {expression}
+            | {verb}+ {expression}
+            | {medicine}+ {expression};
+
 
 subject = 'person' | 'human' ;
 
 object = 'cup' | 'mug' | 'bottle' ;
 
+verb = 'drinking' | 'drinks';
 
+medicine = 'medicine' | 'med';

@@ -11,9 +11,9 @@
 
 from __future__ import annotations
 
+import tatsu.contexts
 import sys
 
-import tatsu.contexts
 from tatsu.buffering import Buffer
 from tatsu.parsing import Parser
 from tatsu.parsing import tatsumasu
@@ -75,79 +75,78 @@ class TatsuParser(Parser):
                 self._positive_closure(block1)
 
                 def block2():
-                    self._object_()
+                    self._verb_()
                 self._positive_closure(block2)
 
                 def block3():
-                    self._verb_()
+                    self._object_()
                 self._positive_closure(block3)
 
                 def block4():
-                    self._expression_()
-                self._closure(block4)
-            with self._option():
+                    self._medicine_()
+                self._positive_closure(block4)
 
                 def block5():
-                    self._subject_()
-                self._positive_closure(block5)
+                    self._expression_()
+                self._closure(block5)
+            with self._option():
 
                 def block6():
-                    self._verb_()
+                    self._subject_()
                 self._positive_closure(block6)
 
                 def block7():
-                    self._object_()
+                    self._verb_()
                 self._positive_closure(block7)
 
                 def block8():
-                    self._expression_()
-                self._closure(block8)
-            with self._option():
+                    self._medicine_()
+                self._positive_closure(block8)
 
                 def block9():
                     self._object_()
                 self._positive_closure(block9)
 
                 def block10():
-                    self._subject_()
-                self._positive_closure(block10)
+                    self._expression_()
+                self._closure(block10)
+            with self._option():
 
                 def block11():
-                    self._verb_()
+                    self._subject_()
                 self._positive_closure(block11)
 
                 def block12():
-                    self._expression_()
-                self._closure(block12)
-            with self._option():
+                    self._object_()
+                self._positive_closure(block12)
 
                 def block13():
-                    self._object_()
+                    self._verb_()
                 self._positive_closure(block13)
 
                 def block14():
-                    self._verb_()
+                    self._medicine_()
                 self._positive_closure(block14)
 
                 def block15():
-                    self._subject_()
-                self._positive_closure(block15)
-
-                def block16():
                     self._expression_()
-                self._closure(block16)
+                self._closure(block15)
             with self._option():
 
+                def block16():
+                    self._subject_()
+                self._positive_closure(block16)
+
                 def block17():
-                    self._verb_()
+                    self._object_()
                 self._positive_closure(block17)
 
                 def block18():
-                    self._subject_()
+                    self._medicine_()
                 self._positive_closure(block18)
 
                 def block19():
-                    self._object_()
+                    self._verb_()
                 self._positive_closure(block19)
 
                 def block20():
@@ -156,39 +155,37 @@ class TatsuParser(Parser):
             with self._option():
 
                 def block21():
-                    self._verb_()
+                    self._subject_()
                 self._positive_closure(block21)
 
                 def block22():
-                    self._object_()
+                    self._medicine_()
                 self._positive_closure(block22)
 
                 def block23():
-                    self._subject_()
+                    self._verb_()
                 self._positive_closure(block23)
 
                 def block24():
-                    self._expression_()
-                self._closure(block24)
-            with self._option():
+                    self._object_()
+                self._positive_closure(block24)
 
                 def block25():
-                    self._subject_()
-                self._positive_closure(block25)
-
-                def block26():
                     self._expression_()
-                self._closure(block26)
+                self._closure(block25)
             with self._option():
 
+                def block26():
+                    self._subject_()
+                self._positive_closure(block26)
+
                 def block27():
-                    self._object_()
+                    self._medicine_()
                 self._positive_closure(block27)
 
                 def block28():
-                    self._expression_()
-                self._closure(block28)
-            with self._option():
+                    self._object_()
+                self._positive_closure(block28)
 
                 def block29():
                     self._verb_()
@@ -197,11 +194,425 @@ class TatsuParser(Parser):
                 def block30():
                     self._expression_()
                 self._closure(block30)
+            with self._option():
+
+                def block31():
+                    self._verb_()
+                self._positive_closure(block31)
+
+                def block32():
+                    self._subject_()
+                self._positive_closure(block32)
+
+                def block33():
+                    self._object_()
+                self._positive_closure(block33)
+
+                def block34():
+                    self._medicine_()
+                self._positive_closure(block34)
+
+                def block35():
+                    self._expression_()
+                self._closure(block35)
+            with self._option():
+
+                def block36():
+                    self._verb_()
+                self._positive_closure(block36)
+
+                def block37():
+                    self._subject_()
+                self._positive_closure(block37)
+
+                def block38():
+                    self._medicine_()
+                self._positive_closure(block38)
+
+                def block39():
+                    self._object_()
+                self._positive_closure(block39)
+
+                def block40():
+                    self._expression_()
+                self._closure(block40)
+            with self._option():
+
+                def block41():
+                    self._verb_()
+                self._positive_closure(block41)
+
+                def block42():
+                    self._object_()
+                self._positive_closure(block42)
+
+                def block43():
+                    self._subject_()
+                self._positive_closure(block43)
+
+                def block44():
+                    self._medicine_()
+                self._positive_closure(block44)
+
+                def block45():
+                    self._expression_()
+                self._closure(block45)
+            with self._option():
+
+                def block46():
+                    self._verb_()
+                self._positive_closure(block46)
+
+                def block47():
+                    self._object_()
+                self._positive_closure(block47)
+
+                def block48():
+                    self._medicine_()
+                self._positive_closure(block48)
+
+                def block49():
+                    self._subject_()
+                self._positive_closure(block49)
+
+                def block50():
+                    self._expression_()
+                self._closure(block50)
+            with self._option():
+
+                def block51():
+                    self._verb_()
+                self._positive_closure(block51)
+
+                def block52():
+                    self._medicine_()
+                self._positive_closure(block52)
+
+                def block53():
+                    self._subject_()
+                self._positive_closure(block53)
+
+                def block54():
+                    self._object_()
+                self._positive_closure(block54)
+
+                def block55():
+                    self._expression_()
+                self._closure(block55)
+            with self._option():
+
+                def block56():
+                    self._verb_()
+                self._positive_closure(block56)
+
+                def block57():
+                    self._medicine_()
+                self._positive_closure(block57)
+
+                def block58():
+                    self._object_()
+                self._positive_closure(block58)
+
+                def block59():
+                    self._subject_()
+                self._positive_closure(block59)
+
+                def block60():
+                    self._expression_()
+                self._closure(block60)
+            with self._option():
+
+                def block61():
+                    self._object_()
+                self._positive_closure(block61)
+
+                def block62():
+                    self._subject_()
+                self._positive_closure(block62)
+
+                def block63():
+                    self._verb_()
+                self._positive_closure(block63)
+
+                def block64():
+                    self._medicine_()
+                self._positive_closure(block64)
+
+                def block65():
+                    self._expression_()
+                self._closure(block65)
+            with self._option():
+
+                def block66():
+                    self._object_()
+                self._positive_closure(block66)
+
+                def block67():
+                    self._subject_()
+                self._positive_closure(block67)
+
+                def block68():
+                    self._medicine_()
+                self._positive_closure(block68)
+
+                def block69():
+                    self._verb_()
+                self._positive_closure(block69)
+
+                def block70():
+                    self._expression_()
+                self._closure(block70)
+            with self._option():
+
+                def block71():
+                    self._object_()
+                self._positive_closure(block71)
+
+                def block72():
+                    self._verb_()
+                self._positive_closure(block72)
+
+                def block73():
+                    self._subject_()
+                self._positive_closure(block73)
+
+                def block74():
+                    self._medicine_()
+                self._positive_closure(block74)
+
+                def block75():
+                    self._expression_()
+                self._closure(block75)
+            with self._option():
+
+                def block76():
+                    self._object_()
+                self._positive_closure(block76)
+
+                def block77():
+                    self._verb_()
+                self._positive_closure(block77)
+
+                def block78():
+                    self._medicine_()
+                self._positive_closure(block78)
+
+                def block79():
+                    self._subject_()
+                self._positive_closure(block79)
+
+                def block80():
+                    self._expression_()
+                self._closure(block80)
+            with self._option():
+
+                def block81():
+                    self._object_()
+                self._positive_closure(block81)
+
+                def block82():
+                    self._medicine_()
+                self._positive_closure(block82)
+
+                def block83():
+                    self._subject_()
+                self._positive_closure(block83)
+
+                def block84():
+                    self._verb_()
+                self._positive_closure(block84)
+
+                def block85():
+                    self._expression_()
+                self._closure(block85)
+            with self._option():
+
+                def block86():
+                    self._object_()
+                self._positive_closure(block86)
+
+                def block87():
+                    self._medicine_()
+                self._positive_closure(block87)
+
+                def block88():
+                    self._verb_()
+                self._positive_closure(block88)
+
+                def block89():
+                    self._subject_()
+                self._positive_closure(block89)
+
+                def block90():
+                    self._expression_()
+                self._closure(block90)
+            with self._option():
+
+                def block91():
+                    self._medicine_()
+                self._positive_closure(block91)
+
+                def block92():
+                    self._subject_()
+                self._positive_closure(block92)
+
+                def block93():
+                    self._verb_()
+                self._positive_closure(block93)
+
+                def block94():
+                    self._object_()
+                self._positive_closure(block94)
+
+                def block95():
+                    self._expression_()
+                self._closure(block95)
+            with self._option():
+
+                def block96():
+                    self._medicine_()
+                self._positive_closure(block96)
+
+                def block97():
+                    self._subject_()
+                self._positive_closure(block97)
+
+                def block98():
+                    self._object_()
+                self._positive_closure(block98)
+
+                def block99():
+                    self._verb_()
+                self._positive_closure(block99)
+
+                def block100():
+                    self._expression_()
+                self._closure(block100)
+            with self._option():
+
+                def block101():
+                    self._medicine_()
+                self._positive_closure(block101)
+
+                def block102():
+                    self._verb_()
+                self._positive_closure(block102)
+
+                def block103():
+                    self._subject_()
+                self._positive_closure(block103)
+
+                def block104():
+                    self._object_()
+                self._positive_closure(block104)
+
+                def block105():
+                    self._expression_()
+                self._closure(block105)
+            with self._option():
+
+                def block106():
+                    self._medicine_()
+                self._positive_closure(block106)
+
+                def block107():
+                    self._verb_()
+                self._positive_closure(block107)
+
+                def block108():
+                    self._object_()
+                self._positive_closure(block108)
+
+                def block109():
+                    self._subject_()
+                self._positive_closure(block109)
+
+                def block110():
+                    self._expression_()
+                self._closure(block110)
+            with self._option():
+
+                def block111():
+                    self._medicine_()
+                self._positive_closure(block111)
+
+                def block112():
+                    self._object_()
+                self._positive_closure(block112)
+
+                def block113():
+                    self._subject_()
+                self._positive_closure(block113)
+
+                def block114():
+                    self._verb_()
+                self._positive_closure(block114)
+
+                def block115():
+                    self._expression_()
+                self._closure(block115)
+            with self._option():
+
+                def block116():
+                    self._medicine_()
+                self._positive_closure(block116)
+
+                def block117():
+                    self._object_()
+                self._positive_closure(block117)
+
+                def block118():
+                    self._verb_()
+                self._positive_closure(block118)
+
+                def block119():
+                    self._subject_()
+                self._positive_closure(block119)
+
+                def block120():
+                    self._expression_()
+                self._closure(block120)
+            with self._option():
+
+                def block121():
+                    self._subject_()
+                self._positive_closure(block121)
+
+                def block122():
+                    self._expression_()
+                self._closure(block122)
+            with self._option():
+
+                def block123():
+                    self._object_()
+                self._positive_closure(block123)
+
+                def block124():
+                    self._expression_()
+                self._closure(block124)
+            with self._option():
+
+                def block125():
+                    self._verb_()
+                self._positive_closure(block125)
+
+                def block126():
+                    self._expression_()
+                self._closure(block126)
+            with self._option():
+
+                def block127():
+                    self._medicine_()
+                self._positive_closure(block127)
+
+                def block128():
+                    self._expression_()
+                self._closure(block128)
             #self._error(
             #    'expecting one of: '
             #    "'bottle' 'cup' 'drinking' 'drinks'"
-            #    "'human' 'mug' 'person' <object>"
-            #    '<subject> <verb>'
+            #    "'human' 'med' 'medicine' 'mug' 'person'"
+            #    '<object> <subject> <verb>'
             #)
 
     @tatsumasu()
@@ -242,6 +653,18 @@ class TatsuParser(Parser):
             #    "'drinking' 'drinks'"
             #)
 
+    @tatsumasu()
+    def _medicine_(self):  # noqa
+        with self._choice():
+            with self._option():
+                self._token('medicine')
+            with self._option():
+                self._token('med')
+            #self._error(
+            #    'expecting one of: '
+            #    "'med' 'medicine'"
+            #)
+
 
 class TatsuSemantics:
     def start(self, ast):  # noqa
@@ -261,8 +684,9 @@ class TatsuSemantics:
         bottle = self.check_string_existence_v2(ast, "bottle")
         person = self.check_string_existence_v2(ast, "person")
         verb = self.check_string_existence_v2(ast, "drinking")
-        if person and bottle and verb:
-            return "Person drank water"
+        med = self.check_string_existence_v2(ast, "medicine")
+        if person and bottle and verb and med:
+            return "Person took meds"
         return
 
     def subject(self, ast):  # noqa
@@ -272,6 +696,9 @@ class TatsuSemantics:
         return ast
 
     def verb(self, ast):  # noqa
+        return ast
+
+    def medicine(self, ast):  # noqa
         return ast
 
 

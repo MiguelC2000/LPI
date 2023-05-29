@@ -4,7 +4,7 @@ import tatsu.tool as parser
 def create_grammar():
     # model = parser.to_python_model(grammar)
     # model = parser.compile(grammar,asmodel=True)
-    f = open("Gramatica.txt", "r")
+    f = open("Tatsu.txt", "r")
     grammar = ''.join(f.readlines())
     print(grammar)
     f.close()
